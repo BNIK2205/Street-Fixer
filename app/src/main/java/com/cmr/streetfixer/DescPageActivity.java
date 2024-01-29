@@ -24,6 +24,7 @@ public class DescPageActivity extends AppCompatActivity{
 	private String uid;
 	private String location;
 	private String issues;
+	private String image;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class DescPageActivity extends AppCompatActivity{
 		if (intentt != null) {
 			location = intentt.getStringExtra("location");
 			issues = intentt.getStringExtra("issues");
+			image = intentt.getStringExtra("img");
 		}
 
 
@@ -54,6 +56,7 @@ public class DescPageActivity extends AppCompatActivity{
 				report.put("description", des);
 				report.put("location", location);
 				report.put("suggestion", sug);
+				report.put("image", image);
 				report.put("isSolved", false);
 				report.put("time", currentDateAndTime());
 

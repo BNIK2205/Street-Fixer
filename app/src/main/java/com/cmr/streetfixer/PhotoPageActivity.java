@@ -29,19 +29,20 @@ public class PhotoPageActivity extends AppCompatActivity {
 	StorageReference storageReference;
 	LinearProgressIndicator progress;
 	Uri image;
-	Button btnPickImage, btnUploadImage, btnNext;
+	Button btnPickImage, btnNext;
 	ImageView imageView;
 	EditText location;
+	String issues, downloadUrl;
 
 	private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
 		@Override
 		public void onActivityResult(ActivityResult result) {
 
 			if(result.getResultCode() == RESULT_OK){
-				btnUploadImage.setEnabled(true);
+				btnPickImage.setEnabled(true);
 				if (result.getData() != null) {
 					image = result.getData().getData();
-					btnUploadImage.setEnabled(true);
+					btnPickImage.setEnabled(true);
 					Glide.with(getApplicationContext()).load(image).into(imageView);
 				}
 			} else {
@@ -64,41 +65,38 @@ public class PhotoPageActivity extends AppCompatActivity {
 		progress = binding.progress;
 		imageView = binding.imageView;
 		btnPickImage = binding.btnPickImage;
-		btnUploadImage = binding.btnUploadImage;
 		btnNext = binding.btnNext;
 		location = binding.etLocationAddress;
-		String issues;
 
-		Intent i = getIntent();
-		if (i != null) {
-			issues = i.getStringExtra("selected");
-		} else {
-			issues = null;
-		}
-
-		btnNext.setOnClickListener(v -> {
-			if (!location.getText().toString().isEmpty()) {
-				Intent intent = new Intent(PhotoPageActivity.this, DescPageActivity.class);
-				intent.putExtra("issues", issues);
-				intent.putExtra("location", location.getText().toString());
-				startActivity(intent);
-			} else {
-				Toast.makeText(PhotoPageActivity.this, "Please add location and image!", Toast.LENGTH_SHORT).show();
-			}
-		});
+		btnNext.setOnClickListener(v -> btnUploadImage(image));
 
 		btnPickImage.setOnClickListener(v -> {
 			Intent intent = new Intent(Intent.ACTION_PICK);
 			intent.setType("image/*");
 			activityResultLauncher.launch(intent);
 		});
-
-		btnUploadImage.setOnClickListener(v -> btnUploadImage(image));
 	}
+
 	private void btnUploadImage(Uri image) {
 		StorageReference reference = storageReference.child("image/" + UUID.randomUUID().toString());
 		reference.putFile(image)
-				.addOnSuccessListener(taskSnapshot -> Toast.makeText(PhotoPageActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show())
+				.addOnSuccessListener(taskSnapshot -> {
+					//downloadUrl = reference.getDownloadUrl().toString();
+					if (!location.getText().toString().isEmpty()) {
+						Intent i = getIntent();
+						if (i != null)
+							issues = i.getStringExtra("selected");
+						else
+							issues = null;
+						Intent intent = new Intent(PhotoPageActivity.this, DescPageActivity.class);
+						intent.putExtra("issues", issues);
+						intent.putExtra("location", location.getText().toString());
+						intent.putExtra("img", downloadUrl);
+						startActivity(intent);
+					} else {
+						Toast.makeText(PhotoPageActivity.this, "Please add location and image!", Toast.LENGTH_SHORT).show();
+					}
+				})
 				.addOnFailureListener(e -> Toast.makeText(PhotoPageActivity.this, "There was an error while uploading", Toast.LENGTH_SHORT).show())
 				.addOnProgressListener(snapshot -> {
 					progress.setMax(Math.toIntExact(snapshot.getTotalByteCount()));

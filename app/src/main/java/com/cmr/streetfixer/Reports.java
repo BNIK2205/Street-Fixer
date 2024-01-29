@@ -1,7 +1,14 @@
 package com.cmr.streetfixer;
 
 public class Reports {
-	String issue, description, suggestions, location, time, isSolved;
+	String issue, description, suggestions, location, image, time, isSolved;
+
+	public Reports() {
+	}
+
+	public String getImage() { return image; }
+
+	public void setImage(String image) { this.image = image; }
 
 	public String getTime() { return time; }
 
@@ -43,11 +50,12 @@ public class Reports {
 		this.location = location;
 	}
 
-	public Reports(String issue, String description, String suggestions, String location, String time, String isSolved) {
+	public Reports(String issue, String description, String suggestions, String location, String image, String time, String isSolved) {
 		this.issue = issue;
 		this.description = description;
 		this.suggestions = suggestions;
 		this.location = location;
+		this.image = image;
 		this.time = time;
 		this.isSolved = isSolved;
 	}
