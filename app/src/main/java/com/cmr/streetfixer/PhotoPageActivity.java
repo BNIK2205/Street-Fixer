@@ -32,7 +32,7 @@ public class PhotoPageActivity extends AppCompatActivity {
 	Button btnPickImage, btnNext;
 	ImageView imageView;
 	EditText location;
-	String issues, downloadUrl;
+	String issues;
 
 	private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
 		@Override
@@ -68,7 +68,7 @@ public class PhotoPageActivity extends AppCompatActivity {
 		btnNext = binding.btnNext;
 		location = binding.etLocationAddress;
 
-		btnNext.setOnClickListener(v -> btnUploadImage(image));
+		btnNext.setOnClickListener(v -> uploadImage(image));
 
 		btnPickImage.setOnClickListener(v -> {
 			Intent intent = new Intent(Intent.ACTION_PICK);
@@ -77,25 +77,32 @@ public class PhotoPageActivity extends AppCompatActivity {
 		});
 	}
 
-	private void btnUploadImage(Uri image) {
+	private void uploadImage(Uri image) {
 		StorageReference reference = storageReference.child("image/" + UUID.randomUUID().toString());
+
 		reference.putFile(image)
 				.addOnSuccessListener(taskSnapshot -> {
-					//downloadUrl = reference.getDownloadUrl().toString();
-					if (!location.getText().toString().isEmpty()) {
-						Intent i = getIntent();
-						if (i != null)
-							issues = i.getStringExtra("selected");
-						else
-							issues = null;
-						Intent intent = new Intent(PhotoPageActivity.this, DescPageActivity.class);
-						intent.putExtra("issues", issues);
-						intent.putExtra("location", location.getText().toString());
-						intent.putExtra("img", downloadUrl);
-						startActivity(intent);
-					} else {
-						Toast.makeText(PhotoPageActivity.this, "Please add location and image!", Toast.LENGTH_SHORT).show();
-					}
+					// Image uploaded successfully, now get the download URL
+					reference.getDownloadUrl().addOnSuccessListener(uri -> {
+						// Store the download URL in a variable
+						String downloadUrl = uri.toString();
+
+						// Rest of your code...
+						if (!location.getText().toString().isEmpty()) {
+							Intent i = getIntent();
+							if (i != null)
+								issues = i.getStringExtra("selected");
+							else
+								issues = null;
+							Intent intent = new Intent(PhotoPageActivity.this, DescPageActivity.class);
+							intent.putExtra("issues", issues);
+							intent.putExtra("location", location.getText().toString());
+							intent.putExtra("img", downloadUrl);
+							startActivity(intent);
+						} else {
+							Toast.makeText(PhotoPageActivity.this, "Please add location and image!", Toast.LENGTH_SHORT).show();
+						}
+					});
 				})
 				.addOnFailureListener(e -> Toast.makeText(PhotoPageActivity.this, "There was an error while uploading", Toast.LENGTH_SHORT).show())
 				.addOnProgressListener(snapshot -> {
