@@ -12,6 +12,8 @@ import com.cmr.streetfixer.databinding.ActivityDescPageBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -52,6 +54,8 @@ public class DescPageActivity extends AppCompatActivity{
 				report.put("description", des);
 				report.put("location", location);
 				report.put("suggestion", sug);
+				report.put("isSolved", false);
+				report.put("time", currentDateAndTime());
 
 				dbf.collection(uid)
 						.document(issues)
@@ -65,5 +69,24 @@ public class DescPageActivity extends AppCompatActivity{
 				Toast.makeText(DescPageActivity.this, "Please fill description and suggestion!", Toast.LENGTH_SHORT).show();
 			}
 		});
+	}
+
+	private String currentDateAndTime() {
+		// Get the current date and time
+		LocalDateTime currentDateTime = null;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+			currentDateTime = LocalDateTime.now();
+		}
+		// Format the date and time using a specific pattern
+		DateTimeFormatter formatter = null;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+			formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy    HH:mm:ss");
+		}
+		String formattedDateTime = null;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+			formattedDateTime = currentDateTime.format(formatter);
+		}
+		// Print the current date and time
+		return formattedDateTime;
 	}
 }

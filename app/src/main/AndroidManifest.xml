@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.STREETFIXER"
         tools:targetApi="31">
+        <activity
+            android:name=".DisplayActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -1,14 +1,22 @@
 package com.cmr.streetfixer;
 
 public class Reports {
-	String issue, description, suggestions, location;
+	String issue, description, suggestions, location, time, isSolved;
+
+	public String getTime() { return time; }
+
+	public void setTime(String time) { this.time = time; }
+
+	public String getIsSolved() { return isSolved; }
+
+	public void setIsSolved(String isSolved) { this.isSolved = isSolved; }
 
 	public String getIssue() {
 		return issue;
 	}
 
 	public void setIssue(String issue) {
-		this.description = description;
+		this.issue = issue;
 	}
 
 	public String getDescription() {
@@ -35,10 +43,12 @@ public class Reports {
 		this.location = location;
 	}
 
-	public Reports(String issue, String description, String suggestions, String location) {
+	public Reports(String issue, String description, String suggestions, String location, String time, String isSolved) {
 		this.issue = issue;
 		this.description = description;
 		this.suggestions = suggestions;
 		this.location = location;
+		this.time = time;
+		this.isSolved = isSolved;
 	}
 }
