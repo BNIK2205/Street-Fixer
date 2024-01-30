@@ -19,7 +19,6 @@ public class StatusActivity extends AppCompatActivity {
 	private RecyclerView recyclerView;
 	private StatusAdapter statusAdapter;
 	private List<StatusItem> statusList;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
