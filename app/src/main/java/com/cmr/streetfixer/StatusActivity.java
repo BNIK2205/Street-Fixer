@@ -30,7 +30,6 @@ public class StatusActivity extends AppCompatActivity {
 
 		// Initialize an empty list or fetch data from Firestore
 		statusList = fetchDataFromFirestore();
-
 		// Initialize the adapter with the statusList
 		statusAdapter = new StatusAdapter(statusList);
 
