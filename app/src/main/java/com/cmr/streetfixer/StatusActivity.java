@@ -32,7 +32,6 @@ public class StatusActivity extends AppCompatActivity {
 		statusList = fetchDataFromFirestore();
 		// Initialize the adapter with the statusList
 		statusAdapter = new StatusAdapter(statusList);
-
 		// Set the adapter to the RecyclerView
 		recyclerView.setAdapter(statusAdapter);
 	}
