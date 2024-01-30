@@ -14,7 +14,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Objects;
 
 public class ProfilePageActivity extends AppCompatActivity{
-
 	private ActivityProfilePageBinding binding;
 	String userId;
 	String nameTextView, emailTextView, phoneTextView, addressTextView;
