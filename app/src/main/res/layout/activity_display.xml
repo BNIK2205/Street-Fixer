@@ -18,16 +18,16 @@
             android:id="@+id/tvHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Display"
+            android:text="Issue Details"
             android:layout_marginStart="16dp"
             android:textColor="@color/white"
             android:layout_gravity="center"
             android:textSize="35sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
     <!-- item_data.xml -->
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -40,7 +40,8 @@
             android:layout_height="wrap_content"
             android:text="Issue: "
             android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/locationTextView"
@@ -48,7 +49,8 @@
             android:layout_height="wrap_content"
             android:text="Location: "
             android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/descriptionTextView"
@@ -56,7 +58,8 @@
             android:layout_height="wrap_content"
             android:text="Description: "
             android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/suggestionsTextView"
@@ -64,7 +67,26 @@
             android:layout_height="wrap_content"
             android:text="Suggestions: "
             android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status: "
+            android:textStyle="bold"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/issueImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:contentDescription="Issue photo"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
 </LinearLayout>

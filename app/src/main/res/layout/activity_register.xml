@@ -16,7 +16,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="25dp"
+            tools:ignore="UselessParent">
 
             <TextView
                 android:layout_width="match_parent"
@@ -41,8 +42,9 @@
                     android:layout_height="wrap_content"
                     android:background="#30ffffff"
                     android:hint="Email"
-                    android:textColorHint="@color/white"
-                    android:inputType="textEmailAddress"/>
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="#000000"
+                    tools:ignore="HardcodedText" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -58,9 +60,10 @@
                     android:layout_height="wrap_content"
                     android:background="#30ffffff"
                     android:hint="Password"
-                    android:textColorHint="@color/white"
+                    android:inputType="textPassword"
                     android:textColor="@color/white"
-                    android:inputType="textPassword"/>
+                    android:textColorHint="#000000"
+                    tools:ignore="HardcodedText" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -69,7 +72,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/design_default_color_secondary"
-                android:text="Register"/>
+                android:text="Register"
+                android:textColor="#5E35B1"
+                tools:ignore="DuplicateSpeakableTextCheck,HardcodedText" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,17 +88,19 @@
                     android:layout_height="wrap_content"
                     android:text="Already registered"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/tvLoginHere"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:text="Login here"
                     android:textColor="#FFC107"
                     android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    tools:ignore="HardcodedText" />
 
             </LinearLayout>
 

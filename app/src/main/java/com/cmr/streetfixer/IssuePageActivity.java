@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +28,6 @@ public class IssuePageActivity extends AppCompatActivity{
 		});
 	}
 	public void checkbutton(View view) {
-		RadioGroup radioGroup = findViewById(R.id.radioGroup);
 		int viewId = view.getId();
 
 		if (viewId == R.id.btnRoadDamage ||

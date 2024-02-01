@@ -57,7 +57,8 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:inputType="textEmailAddress"
-            android:autofillHints="emailAddress" />
+            android:autofillHints="emailAddress"
+            tools:ignore="VisualLintTextFieldSize" />
 
         <EditText
             android:id="@+id/passwordTextView"

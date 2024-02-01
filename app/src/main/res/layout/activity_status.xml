@@ -24,13 +24,15 @@
             android:textColor="@color/white"
             android:layout_gravity="center"
             android:textSize="35sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <!-- Columns: S.No, Date, Status -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
         android:orientation="horizontal">
 
         <!-- Column 1: S.No -->
@@ -41,7 +43,8 @@
             android:layout_height="wrap_content"
             android:text="S.No"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <!-- Column 2: Date -->
         <TextView
@@ -51,7 +54,8 @@
             android:layout_height="wrap_content"
             android:text="Problem"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <!-- Column 3: Status -->
         <TextView
@@ -61,7 +65,8 @@
             android:layout_height="wrap_content"
             android:text="Status"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -70,18 +75,8 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:paddingHorizontal="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/row_status" />
-
-
-    <!-- Row 1 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-    </LinearLayout>
-
-    <!-- Add more rows as needed -->
 
 </LinearLayout>
