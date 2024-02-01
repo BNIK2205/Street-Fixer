@@ -45,7 +45,6 @@ public class DescPageActivity extends AppCompatActivity{
 			image = intentt.getStringExtra("img");
 		}
 
-
 		Map<String, Object> report = new HashMap<>();
 
 		btnSubmit.setOnClickListener(v -> {

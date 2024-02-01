@@ -7,17 +7,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class StatusActivity extends AppCompatActivity {
 
 	private RecyclerView recyclerView;
 	private StatusAdapter statusAdapter;
+	private String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 	private List<StatusItem> statusList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +30,12 @@ public class StatusActivity extends AppCompatActivity {
 		recyclerView = findViewById(R.id.recyclerView);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+		recyclerView = findViewById(R.id.recyclerView);
+		recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 		// Initialize an empty list or fetch data from Firestore
-		statusList = fetchDataFromFirestore();
+		statusList = new ArrayList<>();  // Initialize the list
+		fetchDataFromFirestore();
 		// Initialize the adapter with the statusList
 		statusAdapter = new StatusAdapter(statusList);
 		// Set the adapter to the RecyclerView
@@ -36,33 +43,36 @@ public class StatusActivity extends AppCompatActivity {
 	}
 
 	// Method to fetch data from Firestore or create a sample list for demonstration
-	private List<StatusItem> fetchDataFromFirestore() {
+	private void fetchDataFromFirestore() {
 		List<StatusItem> statusItemList = new ArrayList<>();
 
 		FirebaseFirestore db = FirebaseFirestore.getInstance();
-		CollectionReference userCollection = db.collection("user");
+		CollectionReference userCollection = db.collection(uid);
 
 		userCollection.get().addOnCompleteListener(task -> {
 			if (task.isSuccessful()) {
 				for (QueryDocumentSnapshot document : task.getResult()) {
 					// Assuming "issue" and "status" are fields in your documents
 					String issue = document.getString("issue");
-					String status = document.getString("status");
+					Boolean statusf = document.getBoolean("isSolved");
+					String status;
 
+					if (Boolean.TRUE.equals(statusf))
+						status = "Solved";
+					else
+						status = "Pending";
 					// Create a new StatusItem and add it to the list
 					StatusItem statusItem = new StatusItem(issue, status);
 					statusItemList.add(statusItem);
 				}
 
-				// Notify the adapter that the data set has changed
+				// Update the adapter with the new data
+				statusList.addAll(statusItemList);
 				statusAdapter.notifyDataSetChanged();
 			} else {
 				// Handle errors
 				Log.e("Firestore", "Error getting documents: ", task.getException());
 			}
 		});
-
-		return statusItemList;
 	}
-
 }

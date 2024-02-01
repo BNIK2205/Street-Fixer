@@ -49,6 +49,7 @@ public class PhotoPageActivity extends AppCompatActivity {
 			}
 		}
 	});
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,8 +78,12 @@ public class PhotoPageActivity extends AppCompatActivity {
 	}
 
 	private void uploadImage(Uri image) {
-		StorageReference reference = storageReference.child("image/" + UUID.randomUUID().toString());
+		if (image == null) {
+			Toast.makeText(PhotoPageActivity.this, "Please upload an image of the problem!", Toast.LENGTH_SHORT).show();
+			return;
+		}
 
+		StorageReference reference = storageReference.child("image/" + UUID.randomUUID().toString());
 		reference.putFile(image)
 				.addOnSuccessListener(taskSnapshot -> {
 					// Image uploaded successfully, now get the download URL
@@ -99,7 +104,7 @@ public class PhotoPageActivity extends AppCompatActivity {
 							intent.putExtra("img", downloadUrl);
 							startActivity(intent);
 						} else {
-							Toast.makeText(PhotoPageActivity.this, "Please add location and image!", Toast.LENGTH_SHORT).show();
+							Toast.makeText(PhotoPageActivity.this, "Please add location!", Toast.LENGTH_SHORT).show();
 						}
 					});
 				})
