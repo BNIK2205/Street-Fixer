@@ -1,5 +1,7 @@
 package com.cmr.streetfixer;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -17,17 +19,16 @@ import java.util.List;
 import java.util.Objects;
 
 public class StatusActivity extends AppCompatActivity {
-
-	private RecyclerView recyclerView;
 	private StatusAdapter statusAdapter;
-	private String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+	private final String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 	private List<StatusItem> statusList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_status);
 
-		recyclerView = findViewById(R.id.recyclerView);
+		RecyclerView recyclerView = findViewById(R.id.recyclerView);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 		recyclerView = findViewById(R.id.recyclerView);
@@ -40,9 +41,20 @@ public class StatusActivity extends AppCompatActivity {
 		statusAdapter = new StatusAdapter(statusList);
 		// Set the adapter to the RecyclerView
 		recyclerView.setAdapter(statusAdapter);
+
+		statusAdapter = new StatusAdapter(statusList, statusItem -> {
+			// Handle item click, for example, start a new activity
+			Intent intent = new Intent(StatusActivity.this, DisplayActivity.class);
+			// Pass necessary data to the next activity
+			intent.putExtra("issue", statusItem.getIssue());
+			startActivity(intent);
+		});
+
+		recyclerView.setAdapter(statusAdapter);
 	}
 
 	// Method to fetch data from Firestore or create a sample list for demonstration
+	@SuppressLint("NotifyDataSetChanged")
 	private void fetchDataFromFirestore() {
 		List<StatusItem> statusItemList = new ArrayList<>();
 

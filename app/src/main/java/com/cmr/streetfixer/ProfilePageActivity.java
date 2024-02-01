@@ -33,7 +33,7 @@ public class ProfilePageActivity extends AppCompatActivity{
 			addressTextView = binding.addressTextView.getText().toString();
 			userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-			Users users = null;
+			Users users;
 			if (!nameTextView.isEmpty() && !emailTextView.isEmpty() && !phoneTextView.isEmpty() && !addressTextView.isEmpty()) {
 				users = new Users(nameTextView, emailTextView, phoneTextView, addressTextView);
 				db = FirebaseDatabase.getInstance();
