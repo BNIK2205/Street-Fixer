@@ -1,5 +1,11 @@
 package com.cmr.streetfixer;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,8 +17,10 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
 import com.cmr.streetfixer.databinding.ActivityPhotoPageBinding;
@@ -24,11 +32,11 @@ import com.google.firebase.storage.StorageReference;
 import java.util.UUID;
 
 public class PhotoPageActivity extends AppCompatActivity {
-
+	private static final int LOCATION_PERMISSION_REQUEST_CODE = 123; // You can use any unique value
 	StorageReference storageReference;
 	LinearProgressIndicator progress;
 	Uri image;
-	Button btnPickImage, btnNext;
+	Button btnPickImage, btnNext, addLocation;
 	ImageView imageView;
 	EditText location;
 	String issues;
@@ -37,7 +45,7 @@ public class PhotoPageActivity extends AppCompatActivity {
 		@Override
 		public void onActivityResult(ActivityResult result) {
 
-			if(result.getResultCode() == RESULT_OK){
+			if (result.getResultCode() == RESULT_OK) {
 				btnPickImage.setEnabled(true);
 				if (result.getData() != null) {
 					image = result.getData().getData();
@@ -67,6 +75,7 @@ public class PhotoPageActivity extends AppCompatActivity {
 		btnPickImage = binding.btnPickImage;
 		btnNext = binding.btnNext;
 		location = binding.etLocationAddress;
+		addLocation = binding.btnPicklocation;
 
 		btnNext.setOnClickListener(v -> uploadImage(image));
 
@@ -75,7 +84,47 @@ public class PhotoPageActivity extends AppCompatActivity {
 			intent.setType("image/*");
 			activityResultLauncher.launch(intent);
 		});
+
+		addLocation.setOnClickListener(v -> {
+			// Check if location permissions are granted
+			if (ActivityCompat.checkSelfPermission(PhotoPageActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+					&& ActivityCompat.checkSelfPermission(PhotoPageActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				// Request location permissions if not granted
+				ActivityCompat.requestPermissions(PhotoPageActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+			} else {
+				// Location permissions are granted, proceed to get the last known location
+				getLocation();
+			}
+		});
 	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				// Location permissions granted, proceed to get the last known location
+				getLocation();
+			} else {
+				// Location permissions denied, handle accordingly (e.g., show a message)
+				Toast.makeText(PhotoPageActivity.this, "Location permissions denied", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+	// Get the last known location
+	private void getLocation() {
+		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		@SuppressLint("MissingPermission") Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (lastKnownLocation != null) {
+			String locationText = "Latitude: " + lastKnownLocation.getLatitude() + ", Longitude: " + lastKnownLocation.getLongitude();
+			location.setText(locationText);
+
+		} else {
+			Toast.makeText(PhotoPageActivity.this, "Last known location not available", Toast.LENGTH_SHORT).show();
+		}
+	}
+
 
 	private void uploadImage(Uri image) {
 		if (image == null) {
